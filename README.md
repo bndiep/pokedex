@@ -2,7 +2,7 @@
 A simple pokedex app that utilizes PokeAPI to allow users to search for pokemon using their name or their pokemon number.
 
 ## Live Demo
-- WIP
+- [LIVE](https://bndiep.github.io/pokedex/)
 
 **Disclaimer**
 - Best viewed on a computer. Responsiveness WIP.
@@ -10,9 +10,9 @@ A simple pokedex app that utilizes PokeAPI to allow users to search for pokemon 
 - Has issues rendering pokemon with multiple words if you find any specific pokemon with sprites not working feel free to open an issue since they are very specific cases. (i.e. Type-null, Aegislash-shield, and any pokemon with male/female variants).
 ## Tech Stack:
 - React
-- PokeAPI
-- Styled Components
-- React Sound
+- [PokeAPI](https://pokeapi.co/)
+- [Styled Components](https://github.com/styled-components/styled-components)
+- [React Sound](https://www.npmjs.com/package/react-sound)
 
 ## Components:
 - Search bar
@@ -76,3 +76,4 @@ this.state={
 
 ### Icebox:
 - Sega cheat code => display our information.
+- Easter egg: Add trainer sprite to search to get developer's info.
