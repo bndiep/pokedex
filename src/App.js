@@ -133,7 +133,7 @@ const App = () => {
   const handleScrollClick = (e) => {
     //if nothing has been searched yet stop the scroll buttons.
     if (pokemonNum === ""){
-      return;
+      return
     }
     //if on lower bound, go to the last pokemon
     if (pokemonNum === 1 && e.target.value === "-") {
@@ -178,32 +178,20 @@ const App = () => {
     return gifURL
   }
 
-  //TODO: does not work with pokemon #772 "type-null"
   const removeDash = (str) => {
-    if(str.includes("-")){
+    if(str.includes("-") && str.includes("null") || str.includes("tapu")){
       return str.split("-").join("")
-    } else {
+    } else if(str.includes("-") && !str.includes("-o")){
+      return str.slice(0, str.indexOf("-"))
+    } else{
       return str
     }
   }
   
   const ColorPicker = (type) => {
     // returns a hex code
-    console.log("type", type)
-    const colorType = Colors[type.type.name]
-    console.log(colorType)
-    return colorType
+    return Colors[type.type.name]
   }
-
-  // const typesArray = types.map((value, index) => {
-  //     <TypeBlock
-  //       key={index}
-  //       type={ColorPicker(value)}
-  //     >
-  //       { value }
-  //     </TypeBlock>
-  //   }
-  // )
   
   return (
     <AppWrapper>
@@ -308,14 +296,14 @@ const App = () => {
         {!isPlaying ? 'Play Music' : 'Stop Music'}
       </MusicButton>
       <Disclaimer>
-        <p>Disclaimer: Best viewed on a computer. Pokémon not loading? Open an issue <a href="https://github.com/bndiep/pokedex/issues" target="_blank">here.</a></p>
+        <p>Disclaimer: Best viewed on a computer. Pokémon not loading? Open an issue <a href="https://github.com/bndiep/pokedex/issues" target="_blank" rel="noreferrer">here.</a></p>
       </Disclaimer>
       <footer style={{
         position: "absolute",
         bottom: "0"
-      }}>Developed by <a href="https://bndiep.github.io/portfolio/" target="_blank">Bach</a> and <a href="https://github.com/rmdpalo" target="_blank">Miguel</a>.</footer>
+      }}>Developed by <a href="https://bndiep.github.io/portfolio/" target="_blank" rel="noreferrer">Bach</a> and <a href="https://github.com/rmdpalo" target="_blank" rel="noreferrer">Miguel</a>.</footer>
     </AppWrapper>
   )
 }
 
-export default App;
+export default App
