@@ -18,6 +18,7 @@ import {
   ScrollIcon,
   ScrollWrapper,
   Slits,
+  TypeBlock,
   MagnifyingGlass,
   MusicButton,
   OuterScreenWrapper,
@@ -37,6 +38,27 @@ import scrollUp from "./assets/scroll_up.svg"
 import pokemonLogo from "./assets/Pokémon_logo.svg"
 import ditto from "./assets/pixel-ditto.png"
 
+const Colors = {
+  normal: "#A8A77A",
+  fire: "#EE8130",
+  water: "#6390F0",
+  electric: "#F7D02C",
+  grass: "#7AC74C",
+  ice: "#96D9D6",
+  fighting: "#C22E28",
+  poison: "#A33EA1",
+  ground: "#E2BF65",
+  flying: "#A98FF3",
+  psychic: "#F95587",
+  bug: "#A6B91A",
+  rock: "#B6A136",
+  ghost: "#735797",
+  dragon: "#6F35FC",
+  dark: "#705746",
+  steel: "#B7B7CE",
+  fairy: "#D685AD",
+}
+
 const App = () => {
   //pokemon in state
   const [pokemon, setPokemon] = useState("")
@@ -55,7 +77,6 @@ const App = () => {
 
   
   useEffect (() => {
-    console.log("hello")
     //watching for changes in pokemonNum
     //if pokemonNum changes, run fetch call but use pokemonNum (instead of lowerCaseSearch)
     const fetchURL = `https://pokeapi.co/api/v2/pokemon/${pokemonNum}/`
@@ -165,7 +186,25 @@ const App = () => {
       return str
     }
   }
+  
+  const ColorPicker = (type) => {
+    // returns a hex code
+    console.log("type", type)
+    const colorType = Colors[type.type.name]
+    console.log(colorType)
+    return colorType
+  }
 
+  // const typesArray = types.map((value, index) => {
+  //     <TypeBlock
+  //       key={index}
+  //       type={ColorPicker(value)}
+  //     >
+  //       { value }
+  //     </TypeBlock>
+  //   }
+  // )
+  
   return (
     <AppWrapper>
       <GlobalStyle />
@@ -214,7 +253,17 @@ const App = () => {
                       <PokeInfo>
                         <p><b>Height:</b> {height/10} m</p>
                         <p><b>Weight:</b> {weight/10} kg</p>
-                        <p>{types.map(value => capitalize(value.type.name) + " ")}</p>
+                        {types.map((value, index) => {
+                          return (
+                            //TODO: turn TypeBlock into a span and wrap the map in p tag
+                            <TypeBlock
+                              key={index}
+                              type={ColorPicker(value)}
+                            >
+                              {value.type.name}
+                            </TypeBlock>)
+                          })
+                        }
                       </PokeInfo>
                     </PokemonContainer>
                   </div>

@@ -272,3 +272,7 @@ export const Disclaimer = styled.div`
   padding-bottom: 30px;
   font-size: 14px;
 `
+
+export const TypeBlock = styled.p`
+  background-color: ${props => props.type};
+`
