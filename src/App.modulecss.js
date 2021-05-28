@@ -226,6 +226,7 @@ export const ScrollDivot = styled.div`
   height: 8px;
   background-color: #BE933F;
   border-radius: 10px;
+  pointer-events: none;
 `
 
 export const PokemonContainer = styled.div`
