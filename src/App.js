@@ -241,17 +241,19 @@ const App = () => {
                       <PokeInfo>
                         <p><b>Height:</b> {height/10} m</p>
                         <p><b>Weight:</b> {weight/10} kg</p>
-                        {types.map((value, index) => {
-                          return (
-                            //TODO: turn TypeBlock into a span and wrap the map in p tag
-                            <TypeBlock
-                              key={index}
-                              type={ColorPicker(value)}
-                            >
-                              {value.type.name}
-                            </TypeBlock>)
-                          })
-                        }
+                        <p>
+                          {types.map((value, index) => {
+                            return (
+                              //TODO: turn TypeBlock into a span and wrap the map in p tag
+                              <TypeBlock
+                                key={index}
+                                type={ColorPicker(value)}
+                              >
+                                {value.type.name}
+                              </TypeBlock>)
+                            })
+                          }
+                        </p>
                       </PokeInfo>
                     </PokemonContainer>
                   </div>

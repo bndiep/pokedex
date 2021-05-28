@@ -96,6 +96,7 @@ export const Display = styled.div`
   align-items: center;
   justify-content: center;
   margin-top: 10px;
+  box-shadow: inset 5px 5px 1px 0px black;
 `
 
 export const SearchBar = styled.input`
@@ -222,11 +223,12 @@ export const PokemonLogo = styled.img`
 
 export const ScrollDivot = styled.div`
   margin: 10px 5px;
-  width: 30px;
+  width: 31px;
   height: 8px;
   background-color: #BE933F;
   border-radius: 10px;
   pointer-events: none;
+  box-shadow: inset 1px 1px 2px 0px #7d6129;
 `
 
 export const PokemonContainer = styled.div`
@@ -274,6 +276,10 @@ export const Disclaimer = styled.div`
   font-size: 14px;
 `
 
-export const TypeBlock = styled.p`
+export const TypeBlock = styled.span`
   background-color: ${props => props.type};
+  border-radius: 20px;
+  text-align: center;
+  padding: 2px 6px;
+  margin: 0 2px;
 `
