@@ -209,11 +209,13 @@ const App = () => {
         <SearchBarWrapper>
           <SearchBar 
             type="text"
+            aria-label="Pokémon name or number"
             placeholder="Enter a Poké name or #."
             value={search}
             onChange={handleChange}
           />
-          <SearchButton 
+          <SearchButton
+            aria-label="Search"
             value="🔎"
             onClick={handleSubmit}
           >
