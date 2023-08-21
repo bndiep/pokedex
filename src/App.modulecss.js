@@ -19,7 +19,7 @@ export const GlobalStyle = createGlobalStyle`
     font-style: normal;
     font-display: auto;
   }
-  
+
   * {
     font-family: 'Silkscreen';
     margin: 0;
@@ -42,7 +42,7 @@ export const AppWrapper = styled.div`
   justify-content: center;
   width: 100vw;
   height: 100vh;
-  background: url(${background}) no-repeat center center fixed; 
+  background: url(${background}) no-repeat center center fixed;
   -webkit-background-size: cover;
   -moz-background-size: cover;
   -o-background-size: cover;
@@ -114,7 +114,8 @@ export const SearchButton = styled.button`
   border: 10px solid #707070;
   border-radius: 50%;
   background-color: #81b3ff;
-  color: #0d6eff;
+color: red;
+
   width: 65px;
   height: 65px;
   cursor: pointer;
@@ -251,9 +252,9 @@ export const MusicButton = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  margin: 10px; 
-  height: 1.5rem; 
-  border: 10px solid black; 
+  margin: 10px;
+  height: 1.5rem;
+  border: 10px solid black;
   border-radius: 20px;
   padding: 5px;
   background-color: beige;

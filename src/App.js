@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react"
+import { useState} from "react"
 import {
   AppWrapper,
   AssetWrapper,
@@ -37,169 +37,77 @@ import scrollDown from "./assets/scroll_down.svg"
 import scrollUp from "./assets/scroll_up.svg"
 import pokemonLogo from "./assets/Pokémon_logo.svg"
 import ditto from "./assets/pixel-ditto.png"
-
-const Colors = {
-  normal: "#A8A77A",
-  fire: "#EE8130",
-  water: "#6390F0",
-  electric: "#F7D02C",
-  grass: "#7AC74C",
-  ice: "#96D9D6",
-  fighting: "#C22E28",
-  poison: "#A33EA1",
-  ground: "#E2BF65",
-  flying: "#A98FF3",
-  psychic: "#F95587",
-  bug: "#A6B91A",
-  rock: "#B6A136",
-  ghost: "#735797",
-  dragon: "#6F35FC",
-  dark: "#705746",
-  steel: "#B7B7CE",
-  fairy: "#D685AD",
-}
+import {gifHandler,ColorPicker,capitalize} from './utils/utils';
 
 const App = () => {
   //pokemon in state
-  const [pokemon, setPokemon] = useState("")
-  //pokemon id
-  const [pokemonNum, setPokemonNum] = useState("")
-  //user's input in searchbar
+  const [pokemon, setPokemon] = useState(null);
   const [search, setSearch] = useState("")
-  //pokemon characteristic, endpoint is an array of objects
-  const [types, setTypes] = useState([])
-  //pokemon height
-  const [height, setHeight] = useState("")
-  //pokemon weight
-  const [weight, setWeight] = useState("")
-  //play/pause music hook
-  const [isPlaying, setIsPlaying] = useState(false)
+  const [playSound, setPlaySound] = useState(false)
 
-  
-  useEffect (() => {
-    //watching for changes in pokemonNum
-    //if pokemonNum changes, run fetch call but use pokemonNum (instead of lowerCaseSearch)
-    const fetchURL = `https://pokeapi.co/api/v2/pokemon/${pokemonNum}/`
-    if (search === "" && pokemonNum === "") {
-      return
+  const fetchPokemon = async (search) => {
+    const fetchURL = `https://pokeapi.co/api/v2/pokemon/${search}/`;
+    try {
+      if (pokemon?.id != search) {
+        const response = (await fetch(fetchURL));
+        const data = await response.json();
+
+        setPokemon(data);
+      }
+
+    } catch (error) {
+      console.log({error})
     }
-    //fetch data from api (hardcoded for now)
-    fetch(fetchURL)
-    //take the response and convert to JSON
-    .then(response => response.json())
-    //console log for now (eventually would set to state)
-    .then(data => {
-      setPokemon(data.name)
-      setPokemonNum(data.id)
-      setTypes(data.types)
-      setHeight(data.height)
-      setWeight(data.weight)
-    })
-    .catch(() => alert("Please enter a valid pokemon name or #"))
-    
-  }, [pokemonNum])
+  }
 
-  //TODO: DRY the useEffect to cover both name and number changes
   const handleSubmit = (e) => {
-    //to lowercase user input for it to work with API
-    const lowerCaseSearch = search.toLowerCase()
-    //API endpoint with interpolation for dynamic value.
-    //once search button is clicked take the lowercased value of text input
-    const fetchURL = `https://pokeapi.co/api/v2/pokemon/${lowerCaseSearch}/`
-
-    //fetch data from api (hardcoded for now)
-    fetch(fetchURL)
-    //take the response and convert to JSON
-    .then(response => response.json())
-    //console log for now (eventually would set to state)
-    .then(data => {
-      setPokemon(data.name)
-      setPokemonNum(data.id)
-      setTypes(data.types)
-      setHeight(data.height)
-      setWeight(data.weight)
-    })
-    .catch(() => alert("Please enter a valid pokemon name or # from 1-809"))
-
-    e.preventDefault()
+    e.preventDefault();
+    fetchPokemon(search);
   }
 
-  const handleChange = (e) => {
-    //keep track of what is in text input
-    setSearch(e.target.value)
+  const handleSearchChange = (e) => {
+    setSearch(e.target.value.toLowerCase())
   }
 
-  //NOTE: looping does not work unless setPokemonNum is set to type integer
   const handleScrollClick = (e) => {
     //if nothing has been searched yet stop the scroll buttons.
-    if (pokemonNum === ""){
+    if (pokemon?.id === ""){
       return
     }
-    //if on lower bound, go to the last pokemon
-    if (pokemonNum === 1 && e.target.value === "-") {
-      setPokemonNum(809)
+    // //if on lower bound, go to the last pokemon
+    if (pokemon?.id === 1 && e.target.value === "-") {
+        fetchPokemon("809");//
     //if on upper bound. go to the first pokemon
-    } else if(pokemonNum === 809 && e.target.value === "+") {
-      setPokemonNum(1)
+    } else if(pokemon?.id === 809 && e.target.value === "+") {
+       fetchPokemon("1");//
     } else if (e.target.value === "-") {
-      setPokemonNum(pokemonNum - 1)
+      const searchVal = pokemon?.id - 1 || "";
+       fetchPokemon(searchVal.toString());//
+
     } else {
-      setPokemonNum(pokemonNum + 1)
+       const searchVal = pokemon?.id + 1 || "";
+       fetchPokemon(searchVal.toString());//
     }
   }
 
   //Ditto button functionality
-  const randomizePokemon = () => {
-    //generate a random number between 1-809
-    let randomNum = Math.floor(Math.random() * 809) + 1
-    setPokemonNum(randomNum)
-  }
-
-  //capitalize function
-  const capitalize = (str) => {
-    //take the first letter of string and toUpperCase it
-    let firstChar = str.charAt(0).toUpperCase()
-    //take the rest of the string and concatenate first char onto it
-    let capitalizedStr = firstChar + str.slice(1, str.length)
-    //return new str
-    return capitalizedStr
+  const randomizePokemon = async (e) => {
+     let randomNum = Math.floor(Math.random() * 809) + 1
+    fetchPokemon(randomNum.toString());//
   }
 
   //play/pause function
-  const handlePlayPause = () => {
-    setIsPlaying(!isPlaying)
+ const handlePlaySound = () => {
+    setPlaySound(!playSound)
   }
 
-  const gifHandler = (str) => {
-    //URL for gif
-    //url for the sprite to display 
-    const gifName = removeDash(str)
-    const gifURL = `https://projectpokemon.org/images/normal-sprite/${gifName}.gif`
-    return gifURL
-  }
-
-  const removeDash = (str) => {
-    if(str.includes("-") && str.includes("null") || str.includes("tapu")){
-      return str.split("-").join("")
-    } else if(str.includes("-") && !str.includes("-o")){
-      return str.slice(0, str.indexOf("-"))
-    } else{
-      return str
-    }
-  }
-  
-  const ColorPicker = (type) => {
-    // returns a hex code
-    return Colors[type.type.name]
-  }
-  
   return (
     <AppWrapper>
       <GlobalStyle />
       <Sound
         url={LittleRoot}
         playStatus={
-          isPlaying ? Sound.status.PLAYING : Sound.status.STOPPED
+          playSound ? Sound.status.PLAYING : Sound.status.STOPPED
         }
         loop={true}
         volume={10}
@@ -207,12 +115,12 @@ const App = () => {
       <h1>Pokédex</h1>
       <ContainerWrapper>
         <SearchBarWrapper>
-          <SearchBar 
+          <SearchBar
             type="text"
             aria-label="Pokémon name or number"
             placeholder="Enter a Poké name or #."
             value={search}
-            onChange={handleChange}
+            onChange={handleSearchChange}
           />
           <SearchButton
             aria-label="Search"
@@ -233,20 +141,19 @@ const App = () => {
           <OuterScreenWrapper>
             <ScreenWrapper>
               <Display>
-                {pokemonNum === "" ? (
+                {!pokemon?.id ? (
                   <PokemonLogo src={pokemonLogo} alt="pokemon logo" />
                 ) : (
                   <div>
-                    <PokemonNameNo><span>no.</span>{pokemonNum}<br/>{capitalize(pokemon)}</PokemonNameNo>
+                    <PokemonNameNo><span>no.</span>{pokemon?.id}<br/>{capitalize(pokemon?.name)}</PokemonNameNo>
                     <PokemonContainer>
-                      <PokemonSprite src={gifHandler(pokemon)} alt={`${pokemon} sprite`} />
+                      <PokemonSprite src={gifHandler(pokemon?.name)} alt={`${pokemon?.name} sprite`} />
                       <PokeInfo>
-                        <p><b>Height:</b> {height/10} m</p>
-                        <p><b>Weight:</b> {weight/10} kg</p>
+                        <p><b>Height:</b> {pokemon?.height/10} m</p>
+                        <p><b>Weight:</b> {pokemon?.weight/10} kg</p>
                         <p>
-                          {types.map((value, index) => {
+                          {pokemon.types.map((value, index) => {
                             return (
-                              //TODO: turn TypeBlock into a span and wrap the map in p tag
                               <TypeBlock
                                 key={index}
                                 type={ColorPicker(value)}
@@ -296,8 +203,8 @@ const App = () => {
           </ScrollWrapper>
         </AssetWrapper>
       </ContainerWrapper>
-      <MusicButton onClick={handlePlayPause}>
-        {!isPlaying ? 'Play Music' : 'Stop Music'}
+      <MusicButton onClick={handlePlaySound}>
+        {!playSound ? 'Play Music' : 'Stop Music'}
       </MusicButton>
       <Disclaimer>
         <p>Disclaimer: Best viewed on a computer. Pokémon not loading? Open an issue <a href="https://github.com/bndiep/pokedex/issues" target="_blank" rel="noreferrer">here.</a></p>
